@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Something Special Awaits You ❤️</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@300;400;600&family=Playfair+Display:italic,wght@700&display=swap');
+
+        :root {
+            --primary: #ff4d6d;
+            --secondary: #ffb3c1;
+            --bg-gradient: linear-gradient(135deg, #4a3141 0%, #2d1b28 100%);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            background: var(--bg-gradient);
+            font-family: 'Poppins', sans-serif;
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+            color: white;
+        }
+
+        /* Heart Rain & Sparkles */
+        .heart-rain, .sparkles {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .heart {
+            position: absolute;
+            color: var(--primary);
+            opacity: 0.5;
+            animation: fall linear infinite;
+        }
+
+        @keyframes fall {
+            to { transform: translateY(110vh) rotate(360deg); }
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 1; }
+        }
+
+        /* Sections */
+        section {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            z-index: 3;
+            text-align: center;
+            padding: 40px 20px;
+        }
+
+        #landing h1 {
+            font-family: 'Dancing Script', cursive;
+            font-size: clamp(3rem, 10vw, 5rem);
+            color: var(--secondary);
+            text-shadow: 0 0 20px rgba(255, 77, 109, 0.5);
+            margin-bottom: 20px;
+        }
+
+        .btn {
+            background: var(--primary);
+            color: white;
+            padding: 15px 45px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            box-shadow: 0 10px 30px rgba(255, 77, 109, 0.4);
+            transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border: none;
+            cursor: pointer;
+            z-index: 10;
+        }
+
+        .btn:hover { transform: scale(1.1) translateY(-5px); background: white; color: var(--primary); }
+
+        /* Photo Grid */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 25px;
+            max-width: 1000px;
+            width: 100%;
+            padding: 20px;
+        }
+
+        .polaroid {
+            background: white;
+            padding: 12px 12px 40px 12px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.4);
+            transition: 0.5s;
+            position: relative;
+            cursor: pointer;
+        }
+
+        .polaroid:nth-child(even) { transform: rotate(3deg); }
+        .polaroid:nth-child(odd) { transform: rotate(-3deg); }
+
+        .polaroid img {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            filter: sepia(0.1);
+        }
+
+        .polaroid:hover {
+            transform: scale(1.05) rotate(0deg) !important;
+            z-index: 5;
+        }
+
+        .polaroid:active { transform: scale(0.95) !important; }
+
+        /* Quotes */
+        .quote-container {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8rem;
+            color: var(--secondary);
+            max-width: 600px;
+            margin: 40px 0;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: 1s ease;
+        }
+
+        .quote-container.visible { opacity: 1; transform: translateY(0); }
+
+        /* Photo Quote Toast */
+        #photo-toast {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: white;
+            color: var(--primary);
+            padding: 15px 30px;
+            border-radius: 50px;
+            font-family: 'Dancing Script', cursive;
+            font-size: 1.4rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            z-index: 1000;
+            display: none;
+            border: 2px solid var(--primary);
+            pointer-events: none;
+        }
+
+        @keyframes toastFade {
+            0% { opacity: 0; transform: translate(-50%, 20px); }
+            10% { opacity: 1; transform: translate(-50%, 0); }
+            90% { opacity: 1; transform: translate(-50%, 0); }
+            100% { opacity: 0; transform: translate(-50%, -20px); }
+        }
+
+        /* Love Letter Modal */
+        #letter-modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.85);
+            backdrop-filter: blur(10px);
+            z-index: 100;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .letter-content {
+            background: #fff9f9;
+            width: 90%;
+            max-width: 550px;
+            padding: 50px;
+            border-radius: 5px;
+            position: relative;
+            box-shadow: 0 0 50px rgba(255, 77, 109, 0.3);
+            text-align: left;
+            border-left: 10px solid var(--primary);
+        }
+
+        #typing-text {
+            font-size: 1.4rem;
+            line-height: 1.8;
+            color: #333;
+            font-family: 'Dancing Script', cursive;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 15px; right: 20px;
+            font-size: 30px;
+            cursor: pointer;
+            color: var(--primary);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="heart-rain" id="heart-rain"></div>
+    <div class="sparkles" id="sparkles"></div>
+
+    <section id="landing">
+        <h1 id="main-title">Something Special<br>Awaits You</h1>
+        <p style="margin-bottom: 30px; opacity: 0.8; letter-spacing: 2px;">A JOURNEY OF US</p>
+        <button class="btn" onclick="startExperience()">Open Your Heart ❤️</button>
+    </section>
+
+    <section id="gallery">
+        <div class="quote-container">"I miss you like the desert misses the rain..."</div>
+        
+        <div class="grid">
+            <div class="polaroid" onclick="popQuote('Your eyes hold my favorite story.')"><img src="nimi.jpeg" alt="Her"></div>
+            <div class="polaroid" onclick="popQuote('Every laugh of yours is a song to my heart.')"><img src="nimi2.jpeg" alt="Her 2"></div>
+            <div class="polaroid" onclick="popQuote('A beautiful memory that I carry everywhere.')"><img src="nimi3.jpeg" alt="Memory"></div>
+            <div class="polaroid" onclick="popQuote('You are my favorite person in the world.')"><img src="pn.jpg" alt="Love"></div>
+            <div class="polaroid" onclick="popQuote('The best part of my day is thinking of you.')"><img src="nimi4.jpeg" alt="New Image 1"></div>
+            <div class="polaroid" onclick="popQuote('Forever isn’t long enough with you.')"><img src="nimi5.jpeg" alt="New Image 2"></div>
+        </div>
+
+        <div class="quote-container">"In every universe, I'd still choose you."</div>
+        
+        <button class="btn" style="margin-top: 50px;" onclick="openLetter()">Read My Message 💌</button>
+    </section>
+
+    <div id="photo-toast"></div>
+
+    <div id="letter-modal">
+        <div class="letter-content">
+            <span class="close-btn" onclick="closeLetter()">&times;</span>
+            <h2 style="color: var(--primary); margin-bottom: 20px; font-family: 'Playfair Display';">My Dearest Nimi,</h2>
+            <div id="typing-text"></div>
+        </div>
+    </div>
+
+    <audio id="bg-music" loop>
+        <source src="love.mpeg" type="audio/mpeg">
+    </audio>
+
+    <script>
+        // 1. Heart Rain Effect
+        function createHeart() {
+            const heart = document.createElement('div');
+            heart.classList.add('heart');
+            heart.innerHTML = '❤️';
+            heart.style.left = Math.random() * 100 + 'vw';
+            heart.style.animationDuration = Math.random() * 3 + 3 + 's';
+            heart.style.fontSize = Math.random() * 15 + 10 + 'px';
+            document.getElementById('heart-rain').appendChild(heart);
+            setTimeout(() => heart.remove(), 6000);
+        }
+        setInterval(createHeart, 400);
+
+        // 2. Sparkle Effect
+        function createSparkle() {
+            const sparkle = document.createElement('div');
+            sparkle.style.position = 'absolute';
+            sparkle.style.width = '3px';
+            sparkle.style.height = '3px';
+            sparkle.style.backgroundColor = 'white';
+            sparkle.style.left = Math.random() * 100 + 'vw';
+            sparkle.style.top = Math.random() * 100 + 'vh';
+            sparkle.style.borderRadius = '50%';
+            sparkle.style.boxShadow = '0 0 10px white';
+            sparkle.style.animation = 'twinkle 2s infinite';
+            document.getElementById('sparkles').appendChild(sparkle);
+            setTimeout(() => sparkle.remove(), 2000);
+        }
+        setInterval(createSparkle, 100);
+
+        // 3. Start Experience
+        function startExperience() {
+            const music = document.getElementById('bg-music');
+            music.play().catch(e => console.log("Music interaction required"));
+            window.scrollTo({ top: window.innerHeight, behavior: 'smooth' });
+        }
+
+        // 4. Photo Click Quote Function
+        function popQuote(text) {
+            const toast = document.getElementById('photo-toast');
+            toast.innerText = text;
+            toast.style.display = 'block';
+            toast.style.animation = 'none';
+            toast.offsetHeight; // trigger reflow
+            toast.style.animation = 'toastFade 3s forwards';
+        }
+
+        // 5. Scroll Observer
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) entry.target.classList.add('visible');
+            });
+        }, { threshold: 0.3 });
+
+        document.querySelectorAll('.quote-container').forEach(q => observer.observe(q));
+
+        // 6. Typing Animation
+        const message = "Being away from you is the hardest thing I've ever done. Every song I hear, every beautiful thing I see, it all reminds me of you. I miss your smile, your laugh, and the way you make everything feel okay. You aren't just my love; you are my home. Happy Valentine's Day! 💖";
+        let i = 0;
+
+        function openLetter() {
+            document.getElementById('letter-modal').style.display = 'flex';
+            if(i === 0) typeWriter();
+        }
+
+        function closeLetter() {
+            document.getElementById('letter-modal').style.display = 'none';
+        }
+
+        function typeWriter() {
+            if (i < message.length) {
+                document.getElementById("typing-text").innerHTML += message.charAt(i);
+                i++;
+                setTimeout(typeWriter, 50);
+            }
+        }
+    </script>
+</body>
+</html>
